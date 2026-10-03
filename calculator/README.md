@@ -3,7 +3,7 @@
 A scientific calculator, graphing calculator and unit/currency converter in one web app.
 The frontend is plain HTML/CSS/JavaScript. The backend is Python using only the standard library, so there are no packages to install.
 
-**Live demo:** https://interviewquestions-4h9p.vercel.app
+**Live demo:** https://interviewquestioncynthia.vercel.app/
 
 ```bash
 python3 server.py                          # http://127.0.0.1:8000
