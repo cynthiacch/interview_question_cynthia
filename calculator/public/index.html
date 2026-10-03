@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app">
+    <section id="calculator" class="calculator" aria-label="Calculator">
+      <div class="tabs" role="tablist">
+        <button role="tab" id="tab-calc" data-tab="calc" aria-selected="true" aria-controls="calc-view">Calculate</button>
+        <button role="tab" id="tab-graph" data-tab="graph" aria-selected="false" aria-controls="graph-view">Graph</button>
+        <button role="tab" id="tab-convert" data-tab="convert" aria-selected="false" aria-controls="convert-view">Convert</button>
+      </div>
+
+      <div id="calc-view" role="tabpanel" aria-labelledby="tab-calc">
+      <div class="display">
+        <div class="display-top">
+          <span id="mode-badge" class="badge" title="Angle mode for sin, cos and tan">DEG</span>
+          <div id="interpreted" class="interpreted" aria-live="polite"></div>
+        </div>
+        <input id="expression" class="expression" type="text" inputmode="decimal"
+               autocomplete="off" spellcheck="false" aria-label="Expression" placeholder="0">
+        <output id="message" class="message" aria-live="polite"></output>
+      </div>
+
+      <details id="steps" class="steps" hidden>
+        <summary>Show steps</summary>
+        <ol id="steps-list"></ol>
+      </details>
+
+      <div class="toolbar">
+        <button data-action="sci" id="sci-toggle" class="tool sci-toggle" aria-expanded="false">Scientific</button>
+        <button data-action="share" class="tool">Share</button>
+        <button data-action="backspace" class="tool" aria-label="Delete">⌫</button>
+      </div>
+
+      <div class="pad">
+        <div class="keys sci" aria-label="Scientific functions">
+          <button data-action="inverse" id="inverse" class="fn" aria-pressed="false" title="Show inverse functions">⇆</button>
+          <button data-action="angle" id="angle-mode" class="fn" title="Switch between degrees and radians">Deg</button>
+          <button data-insert="√(" class="fn" aria-label="Square root">√</button>
+
+          <button data-insert="sin(" data-inverse="sin⁻¹(" data-inverse-label="sin⁻¹" class="fn">sin</button>
+          <button data-insert="cos(" data-inverse="cos⁻¹(" data-inverse-label="cos⁻¹" class="fn">cos</button>
+          <button data-insert="tan(" data-inverse="tan⁻¹(" data-inverse-label="tan⁻¹" class="fn">tan</button>
+
+          <button data-insert="ln(" class="fn">ln</button>
+          <button data-insert="log(" class="fn">log</button>
+          <button data-insert="1÷(" class="fn" aria-label="Reciprocal">1/x</button>
+
+          <button data-insert="e^(" class="fn" aria-label="e to the power">eˣ</button>
+          <button data-insert="^2" class="fn" aria-label="Squared">x²</button>
+          <button data-insert="^" class="fn" aria-label="Power">xʸ</button>
+
+          <button data-insert="abs(" class="fn" aria-label="Absolute value">|x|</button>
+          <button data-insert="π" class="fn" aria-label="Pi">π</button>
+          <button data-insert="e" class="fn" aria-label="Euler's number">e</button>
+        </div>
+
+        <div class="keys main">
+          <button data-action="clear" class="danger" aria-label="Clear">C</button>
+          <button data-action="brackets" class="op" aria-label="Brackets">( )</button>
+          <button data-insert="%" class="op" aria-label="Percent">%</button>
+          <button data-insert="÷" class="op" aria-label="Divide">÷</button>
+
+          <button data-insert="7">7</button>
+          <button data-insert="8">8</button>
+          <button data-insert="9">9</button>
+          <button data-insert="×" class="op" aria-label="Multiply">×</button>
+
+          <button data-insert="4">4</button>
+          <button data-insert="5">5</button>
+          <button data-insert="6">6</button>
+          <button data-insert="-" class="op" aria-label="Minus">−</button>
+
+          <button data-insert="1">1</button>
+          <button data-insert="2">2</button>
+          <button data-insert="3">3</button>
+          <button data-insert="+" class="op" aria-label="Plus">+</button>
+
+          <button data-action="sign" aria-label="Change sign">+/−</button>
+          <button data-insert="0">0</button>
+          <button data-insert=".">.</button>
+          <button data-action="equals" class="equals" aria-label="Equals">=</button>
+        </div>
+      </div>
+      </div>
+
+      <div id="graph-view" role="tabpanel" aria-labelledby="tab-graph" hidden>
+        <div class="graph-layout">
+          <div class="graph-main">
+            <div class="graph-frame">
+              <canvas id="graph-canvas" aria-label="Graph of the functions entered below"></canvas>
+              <div class="graph-overlay">
+                <span id="graph-badge" class="badge" title="Angle mode for sin, cos and tan">RAD</span>
+              </div>
+              <div class="zoom-buttons">
+                <button data-g-action="zoom-in" aria-label="Zoom in">+</button>
+                <button data-g-action="zoom-out" aria-label="Zoom out">−</button>
+              </div>
+            </div>
+            <div id="trace" class="trace" aria-live="polite">Hover or tap the graph to trace · drag to move · scroll to zoom</div>
+          </div>
+
+          <div class="graph-side">
+            <div class="y-list">
+              <div class="y-row" style="--series: var(--c1)">
+                <label class="y-label"><input type="checkbox" class="y-visible" checked aria-label="Show Y1"><span class="swatch"></span>Y₁ =</label>
+                <input class="y-input" type="text" spellcheck="false" autocomplete="off" placeholder="e.g. sin(x)" aria-label="Y1">
+                <div class="y-error" aria-live="polite"></div>
+              </div>
+              <div class="y-row" style="--series: var(--c2)">
+                <label class="y-label"><input type="checkbox" class="y-visible" checked aria-label="Show Y2"><span class="swatch"></span>Y₂ =</label>
+                <input class="y-input" type="text" spellcheck="false" autocomplete="off" placeholder="e.g. x^2 - 3" aria-label="Y2">
+                <div class="y-error" aria-live="polite"></div>
+              </div>
+              <div class="y-row" style="--series: var(--c3)">
+                <label class="y-label"><input type="checkbox" class="y-visible" checked aria-label="Show Y3"><span class="swatch"></span>Y₃ =</label>
+                <input class="y-input" type="text" spellcheck="false" autocomplete="off" aria-label="Y3">
+                <div class="y-error" aria-live="polite"></div>
+              </div>
+              <div class="y-row" style="--series: var(--c4)">
+                <label class="y-label"><input type="checkbox" class="y-visible" checked aria-label="Show Y4"><span class="swatch"></span>Y₄ =</label>
+                <input class="y-input" type="text" spellcheck="false" autocomplete="off" aria-label="Y4">
+                <div class="y-error" aria-live="polite"></div>
+              </div>
+            </div>
+
+            <div class="insert-row" aria-label="Insert into the selected function">
+              <button data-g-insert="x">x</button>
+              <button data-g-insert="^">^</button>
+              <button data-g-insert="(">(</button>
+              <button data-g-insert=")">)</button>
+              <button data-g-insert="√(">√</button>
+              <button data-g-insert="π">π</button>
+              <button data-g-insert="sin(">sin</button>
+              <button data-g-insert="cos(">cos</button>
+              <button data-g-insert="tan(">tan</button>
+              <button data-g-insert="ln(">ln</button>
+              <button data-g-insert="abs(">|x|</button>
+              <button data-g-insert="e">e</button>
+            </div>
+
+            <fieldset class="window">
+              <legend>Window</legend>
+              <label>Xmin <input id="xmin" type="number" step="any"></label>
+              <label>Xmax <input id="xmax" type="number" step="any"></label>
+              <label>Ymin <input id="ymin" type="number" step="any"></label>
+              <label>Ymax <input id="ymax" type="number" step="any"></label>
+            </fieldset>
+
+            <div class="presets">
+              <button data-g-action="standard" title="x and y from -10 to 10">Standard</button>
+              <button data-g-action="trig" title="One full period either side, y from -4 to 4">Trig</button>
+              <button data-g-action="fit" title="Fit y to the visible curves">Fit</button>
+              <button data-g-action="angle" id="graph-angle" title="Switch between degrees and radians">Deg</button>
+            </div>
+
+            <div class="graph-actions">
+              <button data-g-action="share" class="tool">Share</button>
+              <button data-g-action="plot" class="primary">Graph</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="convert-view" role="tabpanel" aria-labelledby="tab-convert" hidden>
+        <div id="categories" class="categories" role="radiogroup" aria-label="What to convert"></div>
+
+        <div class="convert-box">
+          <div class="convert-row">
+            <input id="conv-value" class="conv-value" type="text" inputmode="decimal" autocomplete="off"
+                   spellcheck="false" aria-label="Amount" value="1">
+            <select id="conv-from" aria-label="From unit"></select>
+          </div>
+          <button id="conv-swap" class="swap" aria-label="Swap units" title="Swap units">⇅</button>
+          <div class="convert-row">
+            <output id="conv-result" class="conv-result" aria-live="polite">—</output>
+            <select id="conv-to" aria-label="To unit"></select>
+          </div>
+        </div>
+
+        <div id="conv-formula" class="conv-formula"></div>
+        <div id="conv-error" class="message error" aria-live="polite"></div>
+        <ul id="conv-also" class="conv-also" hidden></ul>
+        <p id="conv-note" class="muted"></p>
+        <p id="conv-attribution" class="muted small" hidden><a target="_blank" rel="noopener"></a></p>
+        <p class="muted small">Tip: the amount can be a calculation, like <code>5 + 11/12</code>.</p>
+      </div>
+    </section>
+
+    <section class="history" aria-label="History">
+      <div class="history-header">
+        <h2>History</h2>
+        <button id="clear-history" class="link">Clear</button>
+      </div>
+      <ol id="history-list"></ol>
+      <p id="history-empty" class="muted">Calculations you run will appear here. Click one to reuse it.</p>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" hidden></div>
+  <script src="app.js"></script>
+  <script src="graph.js"></script>
+  <script src="convert.js"></script>
+</body>
+</html>
