@@ -46,7 +46,7 @@ you can't easily check the answer yourself, so it must never silently give a wro
 ### Convert
 
 - **Currency:** 166 currencies with live mid-market rates. The rate and the date it was updated are shown (`1 AUD = 22.17 TWD`), along with a note that banks charge more.
-- **Units:** length, weight, temperature, volume, area and speed, including US cups/tbsp, US vs UK gallons, and Taiwan's 坪 and 斤. Factors are exact (1 in = 2.54 cm), and every result shows its formula.
+- **Units:** length, weight, temperature, volume, area and speed, including US cups/tbsp, US vs UK gallons, and Taiwan's 坪 (píng, an area unit used for property, ≈ 3.306 m²) and 斤 (jīn, or catty, a weight unit used at markets, = 600 g in Taiwan). Factors are exact (1 in = 2.54 cm), and every result shows its formula.
 - **Shoe sizes:** US Men's, US Women's, UK, EU and JP (cm), showing the size in every system at once, with a note that sizes vary by brand.
 - The amount can be a calculation, so `5 + 11/12` ft → 180.34 cm.
 - Links like `/?tab=convert&c=currency&from=AUD&to=TWD&v=100` open a specific conversion.
